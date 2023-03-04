@@ -14,13 +14,19 @@ class Card(Randommer):
             dict: card data
         '''
         url = self.base_url + 'Card'
-        payload = {
-            "type": type
-        }
-        headers = {
-            "X-Api-Key": api_key
-        }
-        response = requests.get(url, params=payload, headers=headers)
+        if type is not None:
+            payload = {
+                "type": type
+            }
+            headers = {
+                "X-Api-Key": api_key
+            }
+            response = requests.get(url, params=payload, headers=headers)
+        else:
+            headers = {
+                "X-Api-Key": api_key
+            }
+            response = requests.get(url, params=payload, headers=headers)
 
         return response.json()
 
@@ -33,10 +39,15 @@ class Card(Randommer):
         Returns:
             list: list of types
         '''
-        url = self.get_url() + 'Card/Types'
-        headers = {'X-Api-Key': api_key}
-        response = requests.get(url, headers=headers)
-        return response.json()
+        url = self.base_url+'Card/Types'
+        headers = {
+            "X-Api-Key":api_key
+        }
+       
+        r = requests.get(url, headers=headers)
+        return r.json()
 
 card = Card()
-print(card.get_card_types("2d794c6f46094ceb96bd719c1c26c984"))
+key = "940a688e878544858234dee258149563"
+
+print(card.get_card_types(key))
